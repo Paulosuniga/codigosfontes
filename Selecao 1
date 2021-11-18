@@ -1,60 +1,52 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main (void) {
-  int i;
-  int v[8] = { -1, 7, -3, 11, 4, -2, 4, 8 };
+int* merge(int* array1, int* array2 , int size1 , int size2){
+    int k , i , j;
+    i = j = 0;
 
-  mergesort(v, 8);
+    int* array3 = (int) malloc(sizeof((int)(size1+size2)));
 
-  for (i = 0; i < 8; i++) printf("%d| " , v[i]);
-  
-  	printf("\nO i-esimo menor elemento eh: %d",v[2]);
-
-  putchar('\n');
-
-  return 0;
+    for (k=0 ; k < size1 + size2 ; k++){
+        array3[k] = ((array1[i] <= array2[j] && i < size1) || j >= size2) ? array1[i++] : array2[j++];
+    }
+        return array3;
 }
 
+void merge_sort(int* array , int size){
+    int m = size/2;
+    int* tmp;
 
-void mergesort(int *v, int n) {
-  int *c = malloc(sizeof(int) * n);
-  sort(v, c, 0, n - 1);
-  free(c);
+    if(size>1){
+        merg_sort(array,m);
+        merg_sort(&array[m],size-m);
+    }
+
+    tmp = merge(array , &array[m] , m , size-m);
+
+    for(int i = 0; i < size; i++) array[i] = tmp[i];
 }
 
-
-void sort(int *v, int *c, int i, int f) {
-  if (i >= f) return;
-
-  int m = (i + f) / 2;
-
-  sort(v, c, i, m);
-  sort(v, c, m + 1, f);
-
-
-  if (v[m] <= v[m + 1]) return;
-
-  merge(v, c, i, m, f);
+int selecao1 (int *array , int size , int i){
+    merg_sort(array , size);
+    return array[i-1];
 }
 
+int main(){
+    int numeros[] = {12,1,27,6,52,25,45,32,61,88} ;
 
+  int i = 0 ;
 
-void merge(int *v, int *c, int i, int m, int f) {
-  int z,
-      iv = i, ic = m + 1;
-
-  for (z = i; z <= f; z++) c[z] = v[z];
-
-  z = i;
-
-  while (iv <= m && ic <= f) {
-
-    if (c[iv] <= c[ic]) v[z++] = c[iv++];
-    else v[z++] = c[ic++];
+  while (i < 10)
+  {
+    printf ("%i ", numeros[i]) ;
+    ++i ;
   }
 
-  while (iv <= m) v[z++] = c[iv++];
+  printf ("\n") ;
 
-  while (ic <= f) v[z++] = c[ic++];
+  printf ("%i", selecao1 (numeros, 10, 3)) ;
+
+
+  return 0;
 }
