@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void troca(int* a, int* b) {
+  int tmp;
+  tmp = *a;
+  *a = *b;
+  *b = tmp;
+}
+
+int partition( int *A , int p , int r ) { 
+    int i = p + rand() % (r - p + 1);
+    int temp = A[r]; A[r] = A[i]; A[i] = temp;
+    int x = A[r];
+    i = p - 1;
+    for(int j=p; j<r; j++)
+        if(A[j] <= x) {
+            i++;
+            temp = A[j]; A[j] = A[i]; A[i] = temp;
+        }
+    temp = A[r]; A[r] = A[i+1]; A[i+1] = temp;
+    return i+1;
+}
+
+int selecao2 (int* array, int size, int i) {
+  int q = partition (array , 0 , size - 1) ;
+  if (size == 1) return array[0] ;
+  if (i < q) return selecao2 (array, q, i) ; // selecao2 (A[1 : q -1], i)
+  else if (i > q) return selecao2 (&array[q+1], size - (q + 1), i - (q + 1)) ; // selecao2 (A[q+1 : n], i-(q+1))
+  else return array[q] ;
+}
+
+int main () {
+  int numeros[] = {12,1,27,6,52,25,45,32,61,88} ;
+
+  int i = 0 ;
+
+  while (i < 10)
+  {
+    printf ("%i ", numeros[i]) ;
+    ++i ;
+  }
+
+  printf ("\n") ;
+
+  printf ("%i", selecao2 (numeros, 10, 3)) ;
+
+  return 0 ;
+}
